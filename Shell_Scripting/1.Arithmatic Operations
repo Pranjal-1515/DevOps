@@ -1,0 +1,9 @@
+#!/bin/bash
+
+a=4
+b=3
+c=$((a+b))  #addition
+d=$((a-b))  #difference
+e=$((a*b))  #multiplication
+f=$((a/b))  #divison
+echo $c $d $e $f

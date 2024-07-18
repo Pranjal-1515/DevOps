@@ -1,0 +1,12 @@
+#!/bin/bash
+
+ping -c1 <any-ip-you-want-to-ping>
+
+if [ $? -eq 0 ]
+ then
+   echo OK
+else
+   echo Not OK
+fi   
+   
+   

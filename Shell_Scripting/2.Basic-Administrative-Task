@@ -1,0 +1,10 @@
+#!/bin/bash
+
+echo "Script to run basic tasks."
+echo  #this will print space
+
+top | head -5
+df -h
+uptime
+
+echo "End of script."

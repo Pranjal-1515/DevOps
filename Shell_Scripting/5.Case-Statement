@@ -1,0 +1,20 @@
+#!/bin/Bash
+
+echo Please chose one of the options below
+echo
+echo 'a = Display Date and Time'
+echo 'b = List file and directories'
+echo 'c = List users logged in'
+echo 'd = Check system uptime'
+
+echo
+read choices                # To take user input
+
+case $choices in            # Start of case statement
+  a) date;;                 # ;; shows the end of each statement block
+  b) ls;;
+  c) who;;
+  d) uptime;;
+  *) echo Invalid choice    # * will act as the default case
+  
+esac                        # End of case statement

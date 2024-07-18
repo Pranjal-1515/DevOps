@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo What is your name?.
+echo      #this will print space
+read name     #to take user input
+echo
+echo Hello $name   #to print given name.

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+for filename in *.txt
+   do 
+      mv $filename ${filename%.txt}.none    # This will change extension .txt to .none
+   done

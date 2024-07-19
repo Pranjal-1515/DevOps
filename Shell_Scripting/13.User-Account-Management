@@ -1,0 +1,39 @@
+#!/bin/bash
+# This will take user name input check and give error if user alraedy exist.
+# This will take user description as input after that ask for UID anfd later create user based on given details.
+
+echo Please provide a username.
+read u
+echo
+
+greap -q $u /etc/passwd
+  if [ $? -eq 0 ]
+    then
+      echo Error -- User $u already exist
+      echo Please choose another username
+      echo
+      exit 0
+  fi
+
+echo Please provide user description.
+read d
+echo
+
+echo Do you want to specify user ID (y/n)?
+read ynu
+echo
+   if [ $ynu == y ]
+     then 
+      echo Please enter UID.
+      read uid
+   useradd $u -c "$d" -u $uid
+   echo
+   echo $u account has been created
+
+   elif [ $ynu == n ]
+     then
+       echo Automated UID will be assigned.
+   useradd $u -c "$d"
+   echo
+   echo $u account has been created
+   fi

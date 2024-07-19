@@ -1,0 +1,19 @@
+#!/bin/bash
+
+tar cvf /tmp/backup.tar /etc /var
+gzip backup.tar
+find /tmp/backup.tar.gz -mtime -1 -type f -print &> /dev/null  
+
+# The command find backup.tar.gz -mtime -1 -type f -print &> /dev/null is used to find regular files (-type f) named backup.tar.gz or
+# modified within the last 24 hours (-mtime -1) starting from the current directory. It then prints the paths of these files (-print). 
+# However, due to &> /dev/null, all the output produced by this command is discarded.
+
+if [ $? -eq 0 ]
+  then 
+    echo Backup was created.
+    echo
+    echo Archiving Backup
+    scp /tmp/backup.tar.gz root@<ip-remote-host>:/path  # This command will move archieve to remote host.
+else
+    echo Backup Failed
+fi    

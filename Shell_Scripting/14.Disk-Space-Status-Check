@@ -1,0 +1,15 @@
+#!/bin/bash
+
+a=df -h | egrep -v "tmpfs|devtmpfs" | tail -n+2 | awk '{print $5}' | cut -d'%' -f1
+
+# df -h : This will give disk usage.
+# egrep -v "tmpfs|devtmpfs" : egrep will filter the given words and -v will invert the output. It will exclude lines containing these words.
+# tail -n+2 : This will remove the header and start from second line.
+# This line will remove % from all lines.
+
+for i in $a
+ do 
+    if [ $i -ge 50 ]
+      then
+        echo Check disk space $i 'df -h | grep $i'
+ done       

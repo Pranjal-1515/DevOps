@@ -1,0 +1,33 @@
+# This backend state file will also keep updating itself as there are changes in statefile
+
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
+
+backend "s3" {
+  bucket = "<created-bucket-name>"
+  key = "<any-name-of-file-we-want-to-give-in-S3>"
+  region = "eu-north-1"
+}
+
+}
+
+# Configure the AWS Provider
+provider "aws" {
+  region = "eu-north-1"
+}
+
+# Create a EC2 instance
+resource "aws_instance" "example" {
+  ami = "ami-0b2777f4fd0d1712a"
+  instance_type = "t3.micro"
+
+
+  tags = {
+    Name = "SampleServer"
+  }
+}

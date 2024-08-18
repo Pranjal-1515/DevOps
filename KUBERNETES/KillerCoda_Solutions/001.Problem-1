@@ -1,0 +1,6 @@
+Q. alpine-reader-pod pod is running, save All INFO and ERROR's pod logs in podlogs.txt
+
+Sol. kubectl logs alpine-reader-pod | grep -E 'INFO|ERROR' > podlogs.txt
+
+- kubectl logs <pod-name> -> This command will fetch the pod logs.
+- grep -E 'INFO|ERROR' -> This will filter the logs to include only lines containing "INFO" or "ERROR". The -E option allows the use of extended regular expressions.

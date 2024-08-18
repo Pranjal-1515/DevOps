@@ -1,0 +1,5 @@
+Q. Decode the contents of the existing secret named database-data in the database-ns namespace and save the decoded content into a file located at decoded.txt
+
+Sol. 1. kubectl get secret database-data --namespace=database-ns -o jsonpath='{.data}' > secret_data.json
+     2. Go to the secret_data.json file and copy the key of the data.
+     3. kubectl get secret database-data --namespace=database-ns -o jsonpath="{.data.<key-name>}" | base64 --decode > decoded.txt

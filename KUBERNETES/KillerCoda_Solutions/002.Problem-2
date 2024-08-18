@@ -1,0 +1,3 @@
+Q. log-reader-pod pod is running, save All pod logs in podalllogs.txt
+
+Sol. kubectl logs log-reader-pod > podalllogs.txt

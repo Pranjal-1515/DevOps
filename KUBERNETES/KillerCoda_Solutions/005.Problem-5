@@ -1,0 +1,10 @@
+Q. Find the pod that consumes the most CPU in all namespace(including kube-system) in all cluster(currently we have single cluster). 
+   Then, store the result in the file high_cpu_pod.txt with the following format: pod_name,namespace .
+
+Sol. 1. kubectl top pods --all-namespaces > pods_cpu_usage.txt
+     2. awk 'NR>1 {print $1, $2, $3}' pods_cpu_usage.txt | sort -k3 -n -r | head -n 1 | awk '{print $2 "," $1}' > high_cpu_pod.txt
+
+- awk 'NR>1 {print $1, $2, $3}': Skips the header row and prints the namespace, pod name, and CPU usage columns.
+- sort -k3 -n -r: Sorts the data by the CPU usage column in descending numerical order.
+- head -n 1: Selects the top line with the highest CPU usage.
+- awk '{print $2 "," $1}': Reformats the output to pod_name,namespace.

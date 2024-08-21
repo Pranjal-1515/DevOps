@@ -1,0 +1,6 @@
+FROM ubuntu:latest         # To use an official image of ubuntu
+WORKDIR /app               # To set the working directory inside the container
+COPY . /app                # To Copy the current directory contents into the container at /app
+RUN apt-get update && apt-get install -y curl      # Install the required the packages
+EXPOSE 80                  # Make port available to the world outside the container
+CMD ["echo", "Hello, DOCKER!"]    # Define command to run your application.

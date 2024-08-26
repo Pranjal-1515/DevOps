@@ -1,0 +1,16 @@
+Q. Create a pod and name the pod pod-nginx and use the nginx image with the latest tag. 
+   Ensure to specify the tag as nginx:latest.
+
+Sol. 1. Create pod.yaml manifest
+            apiVersion: v1
+            kind: Pod
+            metadata:
+               name: pod-nginx
+               labels
+                  app: nginx_app
+            spec:
+               containers:
+               - name: nginx_container
+                 image: nginx:latest
+      2. kubectl apply -f pod.yaml
+      3. kubectl get pods

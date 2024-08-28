@@ -1,0 +1,16 @@
+Q. An application currently running on the Kubernetes cluster employs the nginx web server. 
+   The Nautilus application development team has introduced some recent changes that need deployment. They've crafted an image nginx:1.17 with the latest updates.
+   Execute a rolling update for this application, integrating the nginx:1.17 image. The deployment is named nginx-deployment.
+   Ensure all pods are operational post-update.
+
+Sol. 1. Check all the pods are running
+           - kubectl get pods
+     2. Check version of image deployed
+           - kubectl describe pod <pod-name>
+     3. Now edit deployment and then change the image to the required version
+           - kubectl edit deployment <deployment-name>
+     4. Now scale down and up the replicas to restart the pods
+           - kubectl scale deployment <deployment-name> --replicas=0
+           - kubectl scale deployment <deployment-name> --replicas=3
+     5. Now watch the pods
+           - kubectl get pods -w

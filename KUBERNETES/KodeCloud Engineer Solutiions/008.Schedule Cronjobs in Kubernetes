@@ -1,0 +1,25 @@
+Q. The Nautilus DevOps team is setting up recurring tasks on different schedules. Currently, they're developing scripts to be executed periodically. 
+   To kickstart the process, they're creating cron jobs in the Kubernetes cluster with placeholder commands. Follow the instructions below:
+   Create a cronjob named nautilus.
+   Set Its schedule to something like */7 * * * *. You can set any schedule for now.
+   Name the container cron-nautilus. Utilize the httpd image with latest tag (specify as httpd:latest).
+   Execute the dummy command echo Welcome to xfusioncorp!. Ensure the restart policy is OnFailure.
+
+Sol. 1. Create cronjob.yaml manifest
+            apiVersion: batch/v1
+            kind: CronJob
+            metadata:
+              name: nautilus
+            spec:
+               schedule: "*/7 * * * *"  # Schedule to run every 7 minutes
+               jobTemplate:
+                  spec:
+                     template:
+                        spec:
+                           containers:
+                           - name: cron-nautilus
+                             image: httpd:latest
+                             command: ["sh", "-c", "echo Welcome to xfusioncorp!"]
+                           restartPolicy: OnFailure
+      2. kubectl apply -f cronjob.yaml
+      3. kubectl get cronjob

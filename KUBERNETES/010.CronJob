@@ -1,0 +1,15 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: nautilus
+spec:
+  schedule: "*/7 * * * *"  # Schedule to run every 7 minutes
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: cron-nautilus
+            image: httpd:latest
+            command: ["sh", "-c", "echo Welcome to xfusioncorp!"]
+          restartPolicy: OnFailure

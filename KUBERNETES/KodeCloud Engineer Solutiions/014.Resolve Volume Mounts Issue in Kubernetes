@@ -1,0 +1,17 @@
+Sol. 1. Change directory to /home/thor on jump server
+           - cd //home/thor/
+     2. Check the root directory path in configmap, note path is /var/www/html in configmap
+           - kubectl describe cm nginx-config
+     3. Now, check the mount path in a pod and edit the mountPath in the pod.yaml file to /var/www/html for the nginx container
+           - kubectl get pod nginx-phpfpm -o yaml > pod.yaml
+     4. Then delete and create a pod again
+           - kubectl delete pod nginx-phpfpm
+           - kubectl apply -f pod.yaml
+     5. Now, get a shell inside the container and check first if you able to get any response from nginx server
+           - kubectl exec nginx-phpfpm -c nginx-container -it /bin/bash
+           - cd /var/www/html/
+           - curl localhost:8099
+     6. Now, copy index.php from jump_host to container
+           - echo "<?php phpinfo(); ?>" > index.php
+     7. Now, check the response from nginx web server
+           - curl localhost:8099

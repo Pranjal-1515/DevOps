@@ -1,0 +1,14 @@
+Q. The Nautilus DevOps team aims to containerize various applications following a recent meeting with the application development team. 
+   They intend to conduct testing with the following steps: Install docker-ce and docker compose packages on App Server 3.
+   Initiate the docker service.
+
+Sol. 1. Connect to App Server 3
+          - ssh username@ip
+     2. Install yum-util package
+          - sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+     3. Install docker-ce
+          - sudo yum install -y docker-ce docker-ce-cli containerd.io
+     4. Start a docker daemon service using systemctl
+          - sudo systemctl start docker
+     5. Get the latest docker-compose binary
+          - sudo curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose

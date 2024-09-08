@@ -1,0 +1,10 @@
+Q. A container named kke-container was created by one of the Nautilus project developers on App Server 3. It was solely for testing purposes and now requires deletion. 
+   Execute the following task:
+   Delete the kke-container on App Server 3 in Stratos DC.
+
+Sol. 1. Login to App Server 3
+          - ssh username@ip
+     2. Stop the container
+          - docker stop kke-container
+     3. Remove the container
+          - docker rm kke-container

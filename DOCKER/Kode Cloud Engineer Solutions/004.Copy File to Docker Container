@@ -1,0 +1,16 @@
+Q. The Nautilus DevOps team possesses confidential data on App Server 3 in the Stratos Datacenter. A container named ubuntu_latest is running on the same server.
+   Copy an encrypted file /tmp/nautilus.txt.gpg from the docker host to the ubuntu_latest container located at /usr/src/. Ensure the file is not modified during this operation.
+
+Sol. 1. Login to the App Server 3
+           - ssh username@ip
+     2. Check the container id or name
+           - docker ps
+     3. Go inside the container
+           - docker exec -it ubuntu_latest /bin/bash
+     4. Check required path is existing or not
+           - ls /usr/src/
+     5. If not create required path
+           - mkdir -p /usr/src/
+     6. Now copy the file
+           - docker cp /tmp/nautilus.txt.gpg ubuntu_latest:/usr/src/
+     7.

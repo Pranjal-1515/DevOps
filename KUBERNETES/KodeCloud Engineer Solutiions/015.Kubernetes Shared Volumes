@@ -1,0 +1,50 @@
+Q. We are working on an application that will be deployed on multiple containers within a pod on Kubernetes cluster. 
+  There is a requirement to share a volume among the containers to save some temporary data. 
+  The Nautilus DevOps team is developing a similar template to replicate the scenario. Below you can find more details about it.
+  Create a pod named volume-share-devops.
+  For the first container, use image debian with latest tag only and remember to mention the tag i.e debian:latest, container should be named as volume-container-devops-1, 
+  and run a sleep command for it so that it remains in running state. Volume volume-share should be mounted at path /tmp/blog.
+  For the second container, use image debian with the latest tag only and remember to mention the tag i.e debian:latest, container should be named as volume-container-devops-2, 
+  and again run a sleep command for it so that it remains in running state. Volume volume-share should be mounted at path /tmp/apps.
+  Volume name should be volume-share of type emptyDir.
+  After creating the pod, exec into the first container i.e volume-container-devops-1, and just for testing create a file blog.txt with any content under the mounted path of first container i.e /tmp/blog.
+  The file blog.txt should be present under the mounted path /tmp/apps on the second container volume-container-devops-2 as well, since they are using a shared volume.
+
+Sol. 1. Create a pod manifest
+            apiVersion: v1
+            kind: Pod
+            metadata:
+                 name: volume-share-devops
+            spec:
+                 containers:
+                 - name: volume-container-devops-1
+                   image: debian:latest
+                   command: [ "sleep", "infinity" ]
+                   volumeMounts:
+                   - name: volume-share
+                     mountPath: /tmp/blog
+
+                - name: volume-container-devops-2
+                  image: debian:latest
+                  command: [ "sleep", "infinity" ]
+                  volumeMounts:
+                  - name: volume-share
+                    mountPath: /tmp/apps
+
+               volumes:
+               - name: volume-share
+                 emptyDir: {}
+    2. Apply pod definition file
+            - kubectl apply -f volume-share-devops.yaml
+    3. Check pods
+            - kubectl get pods
+    4. Exec into the Pod in first container
+            - kubectl exec -it volume-share-devops -c volume-container-devops-1 -- /bin/bash
+    5. Create the File in the Shared Volume
+            - echo "This is a test file" > /tmp/blog/blog.txt
+    6. Exec into the Pod in second container and verify
+            - kubectl exec -it volume-share-devops -c volume-container-devops-2 -- /bin/bash
+            - ls /tmp/apps
+
+
+

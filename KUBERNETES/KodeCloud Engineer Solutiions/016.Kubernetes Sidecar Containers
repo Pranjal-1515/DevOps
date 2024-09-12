@@ -11,7 +11,7 @@ Q. We have a web server container running the nginx image. The access and error 
    Add command on sidecar-container "sh","-c","while true; do cat /var/log/nginx/access.log /var/log/nginx/error.log; sleep 30; done"
    Mount the volume shared-logs on both containers at location /var/log/nginx, all containers should be up and running.
 
-Sol. Create pod manifest
+Sol.1.Create pod manifest
        apiVersion: v1
        kind: Pod
        metadata:
@@ -33,3 +33,7 @@ Sol. Create pod manifest
              volumeMounts:
               - name: shared-logs
                 mountPath: /var/log/nginx
+      2. Apply pod manifest
+            - kubectl apply -f pod.yaml
+      3. Check pods are running
+            - kubectl get pods -w

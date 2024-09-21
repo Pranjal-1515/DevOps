@@ -1,0 +1,22 @@
+Q. As per recent requirements shared by the Nautilus application development team, they need custom images created for one of their projects. 
+   Several of the initial testing requirements are already been shared with DevOps team. Therefore, create a docker file /opt/docker/Dockerfile 
+   (please keep D capital of Dockerfile) on App server 1 in Stratos DC and configure to build an image with the following requirements:
+   a. Use ubuntu as the base image.
+   b. Install apache2 and configure it to work on 6400 port. (do not update any other Apache configuration settings like document root etc).
+
+Sol. 1. Connect to App_Server_1
+           - ssh tony@ip_app_server_1
+     2. Create a Dockerfile
+           - sudo vi /opt/docker/Dockerfile
+     3. Write Dockerfile
+           - FROM ubuntu:latest
+             RUN apt-get update && \
+                 apt-get install -y apache2 && \
+                 apt-get clean
+             EXPOSE 6400
+             RUN echo "Listen 6400" >> /etc/apache2/ports.conf
+             CMD ["apache2ctl", "-D", "FOREGROUND"]
+      4. Build the image
+           - docker build -t apache2 .
+      5. Run docker container
+           - docker run -d -p 6400:6400 apache2

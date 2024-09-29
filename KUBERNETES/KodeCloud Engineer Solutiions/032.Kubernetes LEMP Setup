@@ -1,0 +1,172 @@
+Q. The Nautilus DevOps team want to deploy a static website on Kubernetes cluster. They are going to use Nginx, phpfpm and MySQL for the database. 
+   The team had already gathered the requirements and now they want to make this website live. Below you can find more details:
+   Create some secrets for MySQL.
+   Create a secret named mysql-root-pass wih key/value pairs as below:
+    name: password
+    value: R00t
+   Create a secret named mysql-user-pass with key/value pairs as below:
+     name: username
+     value: kodekloud_sam
+
+     name: password
+     value: 8FmzjvFU6S
+
+   Create a secret named mysql-db-url with key/value pairs as below:
+     name: database
+     value: kodekloud_db6
+   Create a secret named mysql-host with key/value pairs as below:
+     name: host
+     value: mysql-service
+   Create a config map php-config for php.ini with variables_order = "EGPCS" data.
+   Create a deployment named lemp-wp.
+   Create two containers under it. First container must be nginx-php-container using image webdevops/php-nginx:alpine-3-php7 and second container
+   must be mysql-container from image mysql:5.6. Mount php-config configmap in nginx container at /opt/docker/etc/php/php.ini location.
+   5) Add some environment variables for both containers:
+   MYSQL_ROOT_PASSWORD, MYSQL_DATABASE, MYSQL_USER, MYSQL_PASSWORD and MYSQL_HOST. Take their values from the secrets you created. 
+   Please make sure to use env field (do not use envFrom) to define the name-value pair of environment variables.
+   6) Create a node port type service lemp-service to expose the web application, nodePort must be 30008.
+   7) Create a service for mysql named mysql-service and its port must be 3306.
+   We already have a /tmp/index.php file on jump_host server.
+   Copy this file into the nginx container under document root i.e /app and replace the dummy values for mysql related variables with the environment 
+   variables you have set for mysql related parameters. Please make sure you do not hard code the mysql related details in this file, 
+   you must use the environment variables to fetch those values.
+
+Sol. 1. Create secrets
+          - kubectl create secret generic mysql-root-pass --from-literal=password=R00t
+          - kubectl create secret generic mysql-user-pass --from-literal=username=kodekloud_sam --from-literal=password=8FmzjvFU6S
+          - kubectl create secret generic mysql-db-url --from-literal=database=kodekloud_db6
+          - kubectl create secret generic mysql-host --from-literal=host=mysql-service
+     2. Create ConfigMap
+          - kubectl create configmap php-config --from-literal=variables_order=EGPCS
+     3. Create deployment manifest
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lemp-wp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lemp-wp
+  template:
+    metadata:
+      labels:
+        app: lemp-wp
+    spec:
+      containers:
+      - name: nginx-php-container
+        image: webdevops/php-nginx:alpine-3-php7
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-root-pass
+              key: password
+        - name: MYSQL_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: mysql-db-url
+              key: database
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: mysql-user-pass
+              key: username
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-user-pass
+              key: password
+        - name: MYSQL_HOST
+          valueFrom:
+            secretKeyRef:
+              name: mysql-host
+              key: host
+        volumeMounts:
+        - name: php-config-volume
+          mountPath: /opt/docker/etc/php/php.ini
+          subPath: variables_order
+        volumeMounts:
+        - name: app-volume
+          mountPath: /app
+      - name: mysql-container
+        image: mysql:5.6
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-root-pass
+              key: password
+        - name: MYSQL_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: mysql-db-url
+              key: database
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: mysql-user-pass
+              key: username
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-user-pass
+              key: password
+        - name: MYSQL_HOST
+          valueFrom:
+            secretKeyRef:
+              name: mysql-host
+              key: host
+      volumes:
+      - name: php-config-volume
+        configMap:
+          name: php-config
+      - name: app-volume
+        emptyDir: {}
+    4. Apply the deployment manifest
+          - kubectl apply -f lemp-wp-deployment.yaml
+    5. Create Services
+apiVersion: v1
+kind: Service
+metadata:
+  name: lemp-service
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+      nodePort: 30008
+  selector:
+    app: lemp-wp
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-service
+spec:
+  ports:
+    - port: 3306
+  selector:
+    app: lemp-wp
+  6. Apply the service.yaml
+        - kubectl apply -f service.yaml
+  7. Copy index.php file to nginx container
+       - kubectl cp /tmp/index.php <nginx-pod-name>:/app/index.php
+  8. Exec in nginx container
+       - kubectl exec -it <pod-name> -c nginx-php-container -- /bin/sh
+  9. Make changes in the /app/index.php
+$servername = getenv('MYSQL_HOST');
+$username = getenv('MYSQL_USER');
+$password = getenv('MYSQL_PASSWORD');
+$dbname = getenv('MYSQL_DATABASE');
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+echo "Connected successfully";
+
+
+Once done, you must be able to access this website using Website button on the top bar, please note that you should see Connected successfully message while accessing this page.

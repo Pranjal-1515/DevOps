@@ -1,0 +1,15 @@
+Q. One of the DevOps engineers was trying to deploy a python app on Kubernetes cluster. Unfortunately, due to some mis-configuration, 
+   the application is not coming up. Please take a look into it and fix the issues. Application should be accessible on the specified nodePort.
+   The deployment name is python-deployment-devops, its using poroko/flask-demo-appimage. The deployment and service of this app is already deployed.
+   nodePort should be 32345 and targetPort should be python flask app's default port.
+
+Sol. 1. Check the logs and describe the pod & service to find the issue.
+           - kubectl logs <pod-name>
+           - kubectl describe pod <pod-name>
+           - kubectl describe svc <service-name>
+     2. Edit the deployment to correct the image name & service to correct the target port.
+           - kubectl edit deployment <deployment-name>
+           - kubectl edit svc <service-name>
+     3. Restart the pods
+           - kubectl scale deployment <deployment-name> --replicas=0
+           - kubectl scale deployment <deployment-name> --replicas=1

@@ -1,3 +1,0 @@
-#    **KUBERNETES NOTES**
-
-

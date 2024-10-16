@@ -1,0 +1,11 @@
+Q. DevOps team created a new Git repository last week; however, as of now no team is using it. 
+   The Nautilus application development team recently asked for a copy of that repo on Storage server in Stratos DC. Please clone the repo as per details shared below:
+   The repo that needs to be cloned is /opt/official.git
+   Clone this git repository under /usr/src/kodekloudrepos directory. Please do not try to make any changes in repo.
+
+Sol. 1. Connect to Storage_Server
+        - ssh name@ip_Storage_Server
+     2. Move to the required directory 
+        - cd /usr/src/kodekloudrepos
+     3. Clone repo
+        - git clone /opt/official.git

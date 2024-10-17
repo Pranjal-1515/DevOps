@@ -5,4 +5,4 @@ Q. There is a Git server utilized by the Nautilus project teams. Recently, a new
    Once logged in, locate the Git repository named sarah/story-blog and fork it under the jon user.
 
 Sol. 1. Login to the Gitea server 
-     2. Click on the fork option to fork the required repo
+     2. Click on the fork option to fork the required repo.

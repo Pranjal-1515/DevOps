@@ -1,0 +1,16 @@
+Q. The Nautilus development team shared with the DevOps team requirements for new application development, setting up a Git repository for that project. 
+   Create a Git repository on Storage server in Stratos DC as per details given below:
+   Install git package using yum on Storage server.
+   After that, create/init a git repository named /opt/beta.git (use the exact name as asked and make sure not to create a bare repository).
+
+Sol. 1. Connect to Storage_Server
+           - ssh name@ip_storage_Server
+     2. Install Git
+           - sudo yum install git -y
+     3. Create the Git Repository
+           - cd /opt
+           - mkdir beta.git
+     4. Initialize the Git repository in that directory
+           - cd beta.git
+           - git init
+

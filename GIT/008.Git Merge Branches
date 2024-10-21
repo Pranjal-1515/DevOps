@@ -1,0 +1,28 @@
+Q. The Nautilus application development team has been working on a project repository /opt/cluster.git. This repo is cloned at /usr/src/kodekloudrepos on storage server in Stratos DC. 
+   They recently shared the following requirements with DevOps team:
+   Create a new branch xfusion in /usr/src/kodekloudrepos/cluster repo from master and copy the /tmp/index.html file (present on storage server itself) into the repo. 
+   Further, add/commit this file in the new branch and merge back that branch into master branch. Finally, push the changes to the origin for both of the branches.
+
+Sol.1. Connect to Storage_Server
+        - ssh name@ip_storage_Server
+    2. Navigate to the Repository Directory
+        - cd /usr/src/kodekloudrepos/cluster
+    3. Create a New Branch
+        - git checkout master
+        - git pull origin master  # Ensure your local master is up to date
+        - git checkout -b xfusion
+    4. Copy the File
+        - cp /tmp/index.html .
+    5. Add and Commit the File
+        - git add index.html
+        - git commit -m "Add index.html to xfusion branch"
+    6. Merge the Branch into Master
+        - git checkout master
+        - git merge xfusion
+    7. Push Changes to Origin
+        - git push origin master
+        - git push origin xfusion
+
+
+
+    

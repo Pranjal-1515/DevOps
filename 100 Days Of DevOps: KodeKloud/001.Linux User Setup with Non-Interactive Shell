@@ -1,0 +1,9 @@
+Q. To accommodate the backup agent tool's specifications, the system admin team at xFusionCorp Industries requires the creation of a user with a non-interactive shell. 
+   Here's your task: Create a user named jim with a non-interactive shell on App Server 3.
+
+Sol. 1. Connect to App Server 3
+          - ssh username@ip
+     2. Create the user with non-interactive shell
+          - sudo useradd -s /sbin/nologin jim
+     3. Verify the user
+          - grep jim /etc/passwd

@@ -1,0 +1,21 @@
+Q. An Ansible playbook needs completion on the jump host, where a team member left off. Below are the details: The inventory file /home/thor/ansible/inventory requires adjustments. 
+   The playbook must run on App Server 2 in Stratos DC. Update the inventory accordingly. Create a playbook /home/thor/ansible/playbook.yml. Include a task to create an empty file /tmp/file.txt on App Server 2.
+
+Sol. 1. Connect to App Server
+          - ssh username@ip
+     2. In Inventory file
+          - stapp02 ansible_host=172.238.16.204 ansible_user=steve ansible_ssh_pass=<Pass> ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+     3. Create playbook
+          - vi playbook.yml
+     4. The inside Playbook
+            ---
+            - name: Playbook to create file on App Server 2
+              hosts: stapp02
+              become: yes
+              tasks:
+               - name: Create empty file /tmp/file.txt
+                 file:
+                   path: /tmp/file.txt
+                   state: touch
+     5. Validate the playbook
+           - ansible-playbook -i inventory playbook.yml

@@ -1,0 +1,7 @@
+Q. Create a user named kareem on App Server 2 in Stratos Datacenter. Set the expiry date to 2024-04-15, ensuring the user is created in lowercase as per standard protocol.
+Sol. 1. Connect to App Server
+          - ssh username@ip
+     2. Create the user with expiry date
+          - sudo useradd -s 2024-04-15 kareem
+     3. Verify the user
+          - sudo chage -l kareem
